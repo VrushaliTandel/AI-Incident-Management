@@ -378,14 +378,13 @@ Open: **http://localhost:8501**
 - Uses the **Web Speech Synthesis API** (browser-native)
 
 ### 🌍 Supported Languages (auto-detected)
-English, Hindi, French, German, Italian, Portuguese, Arabic, Chinese, Japanese, Korean, Hindi, Russian — and any other language supported by your browser's Speech API.
+English, Hindi, Tamil, Telugu, Kannada, Malayalam, Bengali, Gujarati, Marathi, Punjabi, Odia, Urdu.
 
 ### How Multilingual Works
 1. User types or speaks in their language (e.g., Hindi)
 2. The AI detects the language from the query text
 3. LLM prompts include an instruction: *"Respond in the same language as the user's query"*
 4. All AI responses (L1/L2/L3) are returned in the same language
-5. The 🔊 Listen button plays the response in the correct voice/language
 
 ---
 
