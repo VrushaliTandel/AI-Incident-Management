@@ -144,7 +144,7 @@ START ──► RAG (ChromaDB) ──► L1 Resolution
 | 🎤 Voice Input | Browser microphone (Web Speech API), any language |
 | 🔊 Text-to-Speech | AI answers are read aloud in the detected language |
 | 💬 Chat Interface | ChatGPT-style conversation with history |
-| 🌍 Multilingual | Supports English, Spanish, French, German, Hindi, Arabic, Chinese, Japanese, Korean, Russian, and more |
+| 🌍 Multilingual | Supports English, Hindi, French, German, Hindi, Arabic, Chinese, Japanese, Korean, Russian, and more |
 | 📋 Incident History | Persistent history survives restarts |
 | 🔍 Incident Details | Full lifecycle view with conversation timeline |
 | 🛡️ Guardrails | Prompt injection, jailbreak, profanity detection |
@@ -378,10 +378,10 @@ Open: **http://localhost:8501**
 - Uses the **Web Speech Synthesis API** (browser-native)
 
 ### 🌍 Supported Languages (auto-detected)
-English, Spanish, French, German, Italian, Portuguese, Arabic, Chinese, Japanese, Korean, Hindi, Russian — and any other language supported by your browser's Speech API.
+English, Hindi, French, German, Italian, Portuguese, Arabic, Chinese, Japanese, Korean, Hindi, Russian — and any other language supported by your browser's Speech API.
 
 ### How Multilingual Works
-1. User types or speaks in their language (e.g., Spanish)
+1. User types or speaks in their language (e.g., Hindi)
 2. The AI detects the language from the query text
 3. LLM prompts include an instruction: *"Respond in the same language as the user's query"*
 4. All AI responses (L1/L2/L3) are returned in the same language
@@ -625,8 +625,8 @@ pytest tests/test_evaluation.py -v
 | 14 | Answer NO to L3 | Human handoff created |
 | 15 | Check incident status | ESCALATED |
 | 16 | Admin sees escalation | Human Handoffs queue shows it |
-| 17 | Submit incident in Spanish | AI responds in Spanish |
-| 18 | Click 🔊 Listen on Spanish response | TTS speaks Spanish |
+| 17 | Submit incident in Hindi | AI responds in Hindi |
+| 18 | Click 🔊 Listen on Hindi response | TTS speaks Hindi |
 | 19 | Restart backend/frontend | Previous incidents still visible |
 | 20 | Click old incident | Historical conversation loads |
 | 21 | Admin runs DeepEval | 5 metrics calculated |
