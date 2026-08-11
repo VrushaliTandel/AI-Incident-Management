@@ -1,0 +1,497 @@
+
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>AI Incident Management — Architecture Presentation</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,"Segoe UI",system-ui,sans-serif;background:#0f172a;color:#f1f5f9;min-height:100vh;overflow-x:hidden;}
+
+/* ─── SLIDES ─── */
+.slides{width:100%;}
+.slide{display:none;padding:32px 40px;min-height:100vh;animation:fadeIn .4s ease;}
+.slide.active{display:flex;flex-direction:column;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ─── NAV ─── */
+.nav{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:10px;z-index:100;background:rgba(15,23,42,.8);padding:8px 16px;border-radius:40px;border:1px solid rgba(255,255,255,.1);}
+.nav-btn{background:rgba(255,255,255,.1);border:none;color:#f1f5f9;padding:8px 18px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:600;transition:all .2s;}
+.nav-btn:hover{background:rgba(255,255,255,.2);}
+.nav-btn.active{background:#3b82f6;}
+.slide-counter{color:#94a3b8;font-size:12px;display:flex;align-items:center;padding:0 8px;}
+
+/* ─── TITLE SLIDE ─── */
+.title-slide{background:linear-gradient(135deg,#0f172a 0%,#1e1b4b 50%,#0f172a 100%);justify-content:center;align-items:center;text-align:center;}
+.badge{display:inline-block;background:rgba(59,130,246,.2);border:1px solid rgba(59,130,246,.5);color:#93c5fd;font-size:12px;font-weight:700;padding:4px 14px;border-radius:20px;margin-bottom:20px;letter-spacing:.08em;text-transform:uppercase;}
+.main-title{font-size:42px;font-weight:800;line-height:1.15;margin-bottom:12px;background:linear-gradient(135deg,#f1f5f9,#93c5fd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.main-sub{font-size:18px;color:#94a3b8;margin-bottom:32px;}
+.pill-row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:24px;}
+.pill{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:6px 16px;font-size:13px;color:#cbd5e1;}
+.pill.blue{border-color:#3b82f6;color:#93c5fd;}
+.pill.green{border-color:#22c55e;color:#86efac;}
+.pill.purple{border-color:#7c5cd8;color:#c4b5fd;}
+.pill.amber{border-color:#f59e0b;color:#fcd34d;}
+.pill.red{border-color:#ef4444;color:#fca5a5;}
+
+/* ─── ARCH SLIDE ─── */
+.arch-slide{background:#0f172a;}
+.section-title{font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:#64748b;font-weight:700;margin-bottom:16px;}
+.slide-heading{font-size:26px;font-weight:800;color:#f1f5f9;margin-bottom:6px;}
+.slide-caption{font-size:14px;color:#64748b;margin-bottom:28px;}
+
+/* ─── LAYER CARDS ─── */
+.layer-stack{display:flex;flex-direction:column;gap:8px;flex:1;}
+.layer-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:14px 18px;border-left:4px solid;}
+.layer-card.user{border-left-color:#3b82f6;}
+.layer-card.frontend{border-left-color:#7c5cd8;}
+.layer-card.backend{border-left-color:#22c55e;}
+.layer-card.workflow{border-left-color:#f59e0b;}
+.layer-card.data{border-left-color:#94a3b8;}
+.lc-title{font-size:13px;font-weight:700;color:#f1f5f9;margin-bottom:6px;display:flex;align-items:center;gap:6px;}
+.lc-port{font-size:10px;background:rgba(255,255,255,.08);padding:1px 7px;border-radius:10px;color:#94a3b8;}
+.lc-chips{display:flex;flex-wrap:wrap;gap:5px;}
+.lc-chip{font-size:11px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:5px;padding:2px 8px;color:#cbd5e1;}
+.lc-chip.new-f{border-color:#3b82f6;color:#93c5fd;}
+.down-arrow{text-align:center;color:#334155;font-size:18px;font-weight:700;}
+
+/* ─── WORKFLOW SLIDE ─── */
+.workflow-slide{background:#0f172a;}
+.wf-row{display:flex;align-items:center;gap:0;overflow-x:auto;padding:10px 0;}
+.wf-box{display:flex;flex-direction:column;align-items:center;background:rgba(255,255,255,.04);border:2px solid;border-radius:10px;min-width:90px;height:72px;justify-content:center;padding:6px 4px;font-size:11px;font-weight:600;text-align:center;flex-shrink:0;}
+.wf-arrow{color:#334155;font-size:18px;padding:0 4px;font-weight:700;flex-shrink:0;}
+.wf-box .wi{font-size:20px;margin-bottom:2px;}
+.rag{border-color:#3b82f6;color:#93c5fd;}
+.l1{border-color:#7c5cd8;color:#c4b5fd;}
+.diag{border-color:#f59e0b;color:#fcd34d;}
+.route{border-color:#64748b;color:#94a3b8;}
+.l2{border-color:#7c5cd8;color:#c4b5fd;}
+.l3{border-color:#7c5cd8;color:#c4b5fd;}
+.handoff{border-color:#ef4444;color:#fca5a5;}
+.resolve{border-color:#22c55e;color:#86efac;}
+.persist{border-color:#3b82f6;color:#93c5fd;}
+.wf-labels{display:flex;gap:0;overflow-x:auto;}
+.wf-label{min-width:90px;text-align:center;font-size:9px;color:#475569;padding:4px;flex-shrink:0;}
+.decision-box{background:rgba(255,200,0,.05);border:2px solid #f59e0b;border-radius:8px;padding:8px 14px;text-align:center;font-size:11px;color:#fcd34d;display:inline-block;margin:6px;}
+.paths{display:flex;gap:12px;justify-content:center;margin:8px 0;}
+.path{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:10px 16px;font-size:12px;text-align:center;color:#cbd5e1;}
+.path .em{font-size:16px;margin-bottom:4px;}
+
+/* ─── FEATURES SLIDE ─── */
+.features-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;flex:1;}
+.feat-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:16px;border-left:4px solid;}
+.feat-card.user{border-left-color:#3b82f6;}
+.feat-card.admin{border-left-color:#22c55e;}
+.feat-card.ai{border-left-color:#7c5cd8;}
+.feat-card.new{border-left-color:#f59e0b;}
+.feat-title{font-size:13px;font-weight:700;color:#f1f5f9;margin-bottom:10px;}
+.feat-list{list-style:none;display:flex;flex-direction:column;gap:5px;}
+.feat-list li{font-size:12px;color:#94a3b8;display:flex;align-items:center;gap:6px;}
+.feat-list li::before{content:"→";color:#64748b;}
+.new-tag{display:inline-block;background:#1e3a8a;color:#93c5fd;font-size:9px;font-weight:700;padding:1px 5px;border-radius:8px;margin-left:4px;}
+
+/* ─── TECH STACK SLIDE ─── */
+.tech-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;flex:1;}
+.tech-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:14px;text-align:center;}
+.tech-icon{font-size:30px;margin-bottom:6px;}
+.tech-name{font-size:13px;font-weight:700;color:#f1f5f9;margin-bottom:3px;}
+.tech-desc{font-size:11px;color:#64748b;}
+
+/* ─── METRICS SLIDE ─── */
+.metrics-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.metric-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:14px;text-align:center;border-top:3px solid;}
+.metric-card.blue{border-top-color:#3b82f6;}
+.metric-card.green{border-top-color:#22c55e;}
+.metric-card.red{border-top-color:#ef4444;}
+.metric-card.amber{border-top-color:#f59e0b;}
+.metric-card.purple{border-top-color:#7c5cd8;}
+.metric-val{font-size:22px;font-weight:800;color:#f1f5f9;}
+.metric-label{font-size:11px;color:#64748b;margin-top:3px;}
+
+/* ─── GUARDRAILS SLIDE ─── */
+.guard-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;flex:1;}
+.guard-section{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:16px;}
+.guard-title{font-size:13px;font-weight:700;color:#f1f5f9;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.guard-list{list-style:none;display:flex;flex-direction:column;gap:6px;}
+.guard-list li{font-size:12px;color:#94a3b8;display:flex;align-items:flex-start;gap:8px;}
+.guard-dot{width:7px;height:7px;border-radius:50%;margin-top:4px;flex-shrink:0;}
+.gd-red{background:#ef4444;}
+.gd-blue{background:#3b82f6;}
+.gd-green{background:#22c55e;}
+
+/* ─── VOICE SLIDE ─── */
+.voice-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;flex:1;}
+.voice-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:22px;}
+.voice-icon{font-size:40px;margin-bottom:10px;}
+.voice-title{font-size:16px;font-weight:700;color:#f1f5f9;margin-bottom:8px;}
+.voice-desc{font-size:13px;color:#94a3b8;line-height:1.6;margin-bottom:12px;}
+.lang-pills{display:flex;flex-wrap:wrap;gap:5px;}
+.lang-pill{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:3px 10px;font-size:11px;color:#cbd5e1;}
+
+/* ─── FLOW ─── */
+.flow-step{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;}
+.flow-num{width:26px;height:26px;border-radius:50%;background:#3b82f6;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.flow-text{font-size:13px;color:#94a3b8;padding-top:3px;}
+.flow-text strong{color:#f1f5f9;}
+</style>
+</head>
+<body>
+<div class="slides">
+
+  
+  <div class="slide title-slide active" id="slide-1">
+    <div class="badge">Enterprise AI Platform · IBM</div>
+    <div class="main-title">AI Incident Management<br />&amp; Knowledge Assistant</div>
+    <div class="main-sub">Automated IT Troubleshooting · L1 → L2 → L3 → Human Handoff · Multilingual Voice</div>
+    <div class="pill-row">
+      <span class="pill blue">FastAPI Backend</span>
+      <span class="pill purple">LangGraph Workflow</span>
+      <span class="pill blue">ChromaDB RAG</span>
+      <span class="pill green">Streamlit UI</span>
+      <span class="pill amber">OpenAI GPT-4o-mini</span>
+      <span class="pill green">🎤 Voice Input</span>
+      <span class="pill red">🛡️ Guardrails</span>
+      <span class="pill amber">🌍 Multilingual</span>
+    </div>
+    <div style="font-size:13px;color:#475569;margin-top:8px">Click the navigation buttons below to explore →</div>
+  </div>
+
+  
+  <div class="slide arch-slide" id="slide-2">
+    <div class="section-title">01 · System Architecture</div>
+    <div class="slide-heading">Full Stack Overview</div>
+    <div class="slide-caption">Every layer from browser to database — all running on localhost</div>
+    <div class="layer-stack">
+      <div class="layer-card user">
+        <div class="lc-title">👤 User / Admin Browser <span class="lc-port">localhost:8501</span></div>
+        <div class="lc-chips">
+          <span class="lc-chip new-f">🎤 Voice Input (Web Speech API)</span>
+          <span class="lc-chip new-f">🔊 Text-to-Speech</span>
+          <span class="lc-chip new-f">🛡️ Client-side Guardrails</span>
+          <span class="lc-chip new-f">🌍 Multilingual Auto-detect</span>
+          <span class="lc-chip">Login · Register · New Incident · History</span>
+        </div>
+      </div>
+      <div class="down-arrow">⬇ HTTP REST</div>
+      <div class="layer-card frontend">
+        <div class="lc-title">🖥️ Streamlit Frontend <span class="lc-port">Python · frontend/</span></div>
+        <div class="lc-chips">
+          <span class="lc-chip">app.py (guardrails + routing)</span>
+          <span class="lc-chip">User Pages: dashboard · new_incident · history</span>
+          <span class="lc-chip">Admin Pages: dashboard · analytics · handoffs · eval</span>
+          <span class="lc-chip new-f">api.check_user_exists() → "Register first"</span>
+        </div>
+      </div>
+      <div class="down-arrow">⬇ REST API JSON</div>
+      <div class="layer-card backend">
+        <div class="lc-title">⚡ FastAPI Backend <span class="lc-port">localhost:8000</span></div>
+        <div class="lc-chips">
+          <span class="lc-chip new-f">GET /auth/check-user</span>
+          <span class="lc-chip">POST /auth/login · POST /auth/register</span>
+          <span class="lc-chip">POST /incidents · POST /incidents/{id}/resume</span>
+          <span class="lc-chip">GET /admin/dashboard · /analytics · /handoffs</span>
+          <span class="lc-chip new-f">schemas.py server-side guardrails</span>
+        </div>
+      </div>
+      <div class="down-arrow">⬇ LangGraph</div>
+      <div class="layer-card workflow">
+        <div class="lc-title">🔄 LangGraph Workflow <span class="lc-port">backend/graph/</span></div>
+        <div class="lc-chips">
+          <span class="lc-chip">RAG → L1 → Diagnostics → Routing → L2 → L3 → Handoff</span>
+          <span class="lc-chip new-f">Multilingual prompts: responds in user's language</span>
+          <span class="lc-chip">MemorySaver checkpoints · Persist to SQLite</span>
+        </div>
+      </div>
+      <div class="down-arrow">⬇ Read/Write</div>
+      <div class="layer-card data">
+        <div class="lc-title">🗄️ Data Stores</div>
+        <div class="lc-chips">
+          <span class="lc-chip">📦 SQLite (Users · Incidents · Handoffs)</span>
+          <span class="lc-chip">🔷 ChromaDB (7 KB docs · embeddings)</span>
+          <span class="lc-chip">🧠 OpenAI API (gpt-4o-mini · text-embedding-3-small)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="slide workflow-slide" id="slide-3">
+    <div class="section-title">02 · AI Workflow</div>
+    <div class="slide-heading">LangGraph Incident Resolution Pipeline</div>
+    <div class="slide-caption">Stateful multi-turn conversation with automated escalation</div>
+
+    <div class="wf-row">
+      <div class="wf-box rag"><div class="wi">🔍</div>RAG</div>
+      <div class="wf-arrow">→</div>
+      <div class="wf-box l1"><div class="wi">🔧</div>L1 Resolution</div>
+      <div class="wf-arrow">→</div>
+      <div class="wf-box route" style="border-color:#6b7280"><div class="wi">❓</div>Verified?</div>
+      <div class="wf-arrow">→</div>
+      <div class="wf-box diag"><div class="wi">🩺</div>Diagnostics</div>
+      <div class="wf-arrow">→</div>
+      <div class="wf-box route"><div class="wi">🗺️</div>Routing</div>
+      <div class="wf-arrow">→</div>
+      <div class="wf-box l2"><div class="wi">⚙️</div>L2</div>
+      <div class="wf-arrow">→</div>
+      <div class="wf-box route" style="border-color:#6b7280"><div class="wi">❓</div>Verified?</div>
+      <div class="wf-arrow">→</div>
+      <div class="wf-box l3"><div class="wi">🧠</div>L3 Expert</div>
+      <div class="wf-arrow">→</div>
+      <div class="wf-box route" style="border-color:#6b7280"><div class="wi">❓</div>Verified?</div>
+    </div>
+
+    <div class="paths" style="margin-top:20px">
+      <div class="path" style="border-color:#22c55e">
+        <div class="em">✅</div>
+        <strong style="color:#86efac">YES at any stage</strong><br />
+        → Final Response<br />
+        → Status: RESOLVED<br />
+        → Level: L1 / L2 / L3
+      </div>
+      <div class="path" style="border-color:#ef4444">
+        <div class="em">🚨</div>
+        <strong style="color:#fca5a5">NO at all stages</strong><br />
+        → Human Handoff<br />
+        → Status: ESCALATED<br />
+        → Admin Queue
+      </div>
+      <div class="path" style="border-color:#f59e0b">
+        <div class="em">🗺️</div>
+        <strong style="color:#fcd34d">Routing Decision</strong><br />
+        L2 / MORE_DIAGNOSTICS<br />
+        / HUMAN_HANDOFF<br />
+        (AI decides automatically)
+      </div>
+      <div class="path" style="border-color:#3b82f6">
+        <div class="em">💾</div>
+        <strong style="color:#93c5fd">Persistence</strong><br />
+        Every state saved<br />
+        to SQLite<br />
+        Cross-session memory
+      </div>
+    </div>
+
+    <div style="margin-top:20px;background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);border-radius:8px;padding:12px 16px">
+      <strong style="color:#fcd34d;font-size:13px">🌍 Multilingual:</strong>
+      <span style="color:#94a3b8;font-size:13px"> Every LLM prompt instructs the model to detect the user's language and respond in that same language. L1 / L2 / L3 all respond in the user's chosen language automatically.</span>
+    </div>
+  </div>
+
+  
+  <div class="slide" id="slide-4">
+    <div class="section-title">03 · New Features (This Release)</div>
+    <div class="slide-heading">What's New</div>
+    <div class="slide-caption">Voice, guardrails, smart login validation, extended metrics</div>
+    <div class="features-grid" style="margin-top:8px">
+      <div class="feat-card new">
+        <div class="feat-title">🎤 Voice Input (Speech-to-Text)</div>
+        <ul class="feat-list">
+          <li>Browser microphone via Web Speech API</li>
+          <li>Works in any language — auto-detects</li>
+          <li>Transcript copied to clipboard automatically</li>
+          <li>Available on New Incident + Diagnostic pages</li>
+          <li>No API key required — runs in browser</li>
+        </ul>
+      </div>
+      <div class="feat-card new">
+        <div class="feat-title">🔊 Text-to-Speech (AI Response)</div>
+        <ul class="feat-list">
+          <li>🔊 Listen button on every AI message</li>
+          <li>Uses browser Speech Synthesis API</li>
+          <li>Automatically uses detected language voice</li>
+          <li>Works in English, Spanish, French, German, Hindi, Arabic, Chinese, Japanese, Korean, Russian</li>
+        </ul>
+      </div>
+      <div class="feat-card new">
+        <div class="feat-title">🛡️ Input Guardrails (2-Layer)</div>
+        <ul class="feat-list">
+          <li>Frontend: prompt injection, jailbreak detection</li>
+          <li>Frontend: profanity filter, SQL injection block</li>
+          <li>Backend: server-side validation in schemas.py</li>
+          <li>Email / username / password format validation</li>
+          <li>Character length limits enforced everywhere</li>
+        </ul>
+      </div>
+      <div class="feat-card new">
+        <div class="feat-title">🎯 Smart Login Validation</div>
+        <ul class="feat-list">
+          <li>New GET /auth/check-user endpoint</li>
+          <li>"Please register first" if user not in DB</li>
+          <li>"Incorrect password" if user exists but wrong pw</li>
+          <li>"Account disabled" for inactive accounts</li>
+          <li>Fixed undefined error_code bug from original code</li>
+        </ul>
+      </div>
+      <div class="feat-card admin">
+        <div class="feat-title">📊 Extended Analytics (12 KPIs)</div>
+        <ul class="feat-list">
+          <li>Row 1: Total · Resolved · Escalated · In Progress</li>
+          <li>Row 2: L1 · L2 · L3 · Human Handoff counts</li>
+          <li>Row 3: Resolution % · Escalation % · AI Auto % · Handoff %</li>
+          <li>New: AI Resolution Tier Funnel chart</li>
+          <li>New: Metrics Summary sortable table</li>
+        </ul>
+      </div>
+      <div class="feat-card ai">
+        <div class="feat-title">🌍 Multilingual AI Responses</div>
+        <ul class="feat-list">
+          <li>LLM prompts updated with language detection instruction</li>
+          <li>L1 / L2 / L3 respond in user's language</li>
+          <li>Language auto-detected from Unicode block analysis</li>
+          <li>BCP-47 language tag passed to TTS voice engine</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="slide" id="slide-5">
+    <div class="section-title">04 · Security &amp; Guardrails</div>
+    <div class="slide-heading">Input Validation &amp; Security</div>
+    <div class="slide-caption">Two-layer defense: browser + server</div>
+    <div class="guard-grid" style="margin-top:8px">
+      <div class="guard-section">
+        <div class="guard-title">🖥️ Frontend Guardrails</div>
+        <ul class="guard-list">
+          <li><div class="guard-dot gd-red"></div>Prompt injection: "ignore previous instructions"</li>
+          <li><div class="guard-dot gd-red"></div>Jailbreak attempts: "act as unrestricted AI"</li>
+          <li><div class="guard-dot gd-red"></div>SQL injection: "DROP TABLE", "DELETE FROM"</li>
+          <li><div class="guard-dot gd-red"></div>Script injection: &lt;script&gt; tags blocked</li>
+          <li><div class="guard-dot gd-red"></div>Profanity filter — professional language required</li>
+          <li><div class="guard-dot gd-blue"></div>Email format validation (RFC-compliant regex)</li>
+          <li><div class="guard-dot gd-blue"></div>Username: 3-64 chars, safe characters only</li>
+          <li><div class="guard-dot gd-blue"></div>Password: minimum 8 characters + confirmation match</li>
+          <li><div class="guard-dot gd-blue"></div>Input length: 3-5000 characters</li>
+        </ul>
+      </div>
+      <div class="guard-section">
+        <div class="guard-title">⚡ Backend Guardrails (schemas.py)</div>
+        <ul class="guard-list">
+          <li><div class="guard-dot gd-red"></div>Server-side prompt injection regex scan</li>
+          <li><div class="guard-dot gd-red"></div>SQL injection pattern detection</li>
+          <li><div class="guard-dot gd-blue"></div>Query length: 3-5000 chars enforced</li>
+          <li><div class="guard-dot gd-blue"></div>Username length: 3-64 characters</li>
+          <li><div class="guard-dot gd-blue"></div>Password: minimum 8 characters</li>
+          <li><div class="guard-dot gd-green"></div>JWT validation on every authenticated request</li>
+          <li><div class="guard-dot gd-green"></div>User ownership enforcement (no data leakage)</li>
+          <li><div class="guard-dot gd-green"></div>Admin-only routes verified by role check</li>
+        </ul>
+      </div>
+      <div class="guard-section">
+        <div class="guard-title">🎯 Login Validation Flow</div>
+        <div class="flow-step">
+          <div class="flow-num">1</div>
+          <div class="flow-text">User submits username/email + password</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num">2</div>
+          <div class="flow-text"><strong>Check user exists</strong> → GET /auth/check-user</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num">3</div>
+          <div class="flow-text">NOT FOUND → <strong style="color:#fcd34d">"Please register first"</strong></div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num">4</div>
+          <div class="flow-text">FOUND → POST /auth/login</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num">5</div>
+          <div class="flow-text">401 → <strong style="color:#fca5a5">"Incorrect password"</strong></div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num">6</div>
+          <div class="flow-text">403 → <strong style="color:#fca5a5">"Account disabled"</strong></div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num">7</div>
+          <div class="flow-text">200 → <strong style="color:#86efac">JWT issued, routed to dashboard</strong></div>
+        </div>
+      </div>
+      <div class="guard-section">
+        <div class="guard-title">🔒 Authentication Security</div>
+        <ul class="guard-list">
+          <li><div class="guard-dot gd-green"></div>bcrypt password hashing (never plaintext)</li>
+          <li><div class="guard-dot gd-green"></div>JWT tokens — HS256, 8-hour expiry</li>
+          <li><div class="guard-dot gd-green"></div>API keys from environment variables only</li>
+          <li><div class="guard-dot gd-green"></div>CORS restricted to localhost:8501</li>
+          <li><div class="guard-dot gd-green"></div>No sensitive data in logs or error messages</li>
+          <li><div class="guard-dot gd-red"></div>Secret key: 32-byte random hex required</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="slide" id="slide-6">
+    <div class="section-title">05 · Technology Stack</div>
+    <div class="slide-heading">Components &amp; Libraries</div>
+    <div class="slide-caption">Production-grade, actively maintained, no EOL packages</div>
+    <div class="tech-grid" style="margin-top:12px">
+      <div class="tech-card"><div class="tech-icon">⚡</div><div class="tech-name">FastAPI</div><div class="tech-desc">REST API · JWT auth · Pydantic validation · Python 3.12+</div></div>
+      <div class="tech-card"><div class="tech-icon">🔄</div><div class="tech-name">LangGraph</div><div class="tech-desc">Stateful AI workflow · Conditional edges · MemorySaver</div></div>
+      <div class="tech-card"><div class="tech-icon">🔷</div><div class="tech-name">ChromaDB</div><div class="tech-desc">Vector store · Persistent · Similarity search · RAG</div></div>
+      <div class="tech-card"><div class="tech-icon">🧠</div><div class="tech-name">OpenAI GPT-4o-mini</div><div class="tech-desc">L1/L2/L3 resolution · Multilingual · Structured JSON output</div></div>
+      <div class="tech-card"><div class="tech-icon">🖥️</div><div class="tech-name">Streamlit</div><div class="tech-desc">Frontend UI · Chat interface · Admin dashboard · Analytics</div></div>
+      <div class="tech-card"><div class="tech-icon">📦</div><div class="tech-name">SQLAlchemy + SQLite</div><div class="tech-desc">ORM · Users · Incidents · Handoffs · Evaluations</div></div>
+      <div class="tech-card"><div class="tech-icon">📊</div><div class="tech-name">Plotly</div><div class="tech-desc">6 chart types · Funnel · Pie · Bar · Line · Radar</div></div>
+      <div class="tech-card"><div class="tech-icon">🧪</div><div class="tech-name">DeepEval</div><div class="tech-desc">5 RAG metrics · Faithfulness · Relevancy · Precision · Recall</div></div>
+      <div class="tech-card"><div class="tech-icon">🎤</div><div class="tech-name">Web Speech API</div><div class="tech-desc">Browser-native · No API key · STT + TTS · 100+ languages</div></div>
+    </div>
+  </div>
+
+  
+  <div class="slide" id="slide-7">
+    <div class="section-title">06 · Analytics &amp; Metrics</div>
+    <div class="slide-heading">12 KPI Dashboard + 6 Charts</div>
+    <div class="slide-caption">Admin sees the full picture at a glance</div>
+    <div style="margin-bottom:16px;font-size:12px;color:#64748b;text-transform:uppercase;letter-spacing:.06em">Incident Overview</div>
+    <div class="metrics-grid" style="margin-bottom:16px">
+      <div class="metric-card blue"><div class="metric-val">Total</div><div class="metric-label">All Incidents</div></div>
+      <div class="metric-card green"><div class="metric-val">Resolved</div><div class="metric-label">Successfully closed</div></div>
+      <div class="metric-card red"><div class="metric-val">Escalated</div><div class="metric-label">Human handoff</div></div>
+      <div class="metric-card amber"><div class="metric-val">In Progress</div><div class="metric-label">Open incidents</div></div>
+    </div>
+    <div style="margin-bottom:16px;font-size:12px;color:#64748b;text-transform:uppercase;letter-spacing:.06em">AI Resolution Tiers</div>
+    <div class="metrics-grid" style="margin-bottom:16px">
+      <div class="metric-card blue"><div class="metric-val">L1</div><div class="metric-label">First-line resolved</div></div>
+      <div class="metric-card purple"><div class="metric-val">L2</div><div class="metric-label">Advanced resolved</div></div>
+      <div class="metric-card amber"><div class="metric-val">L3</div><div class="metric-label">Expert resolved</div></div>
+      <div class="metric-card red"><div class="metric-val">Human</div><div class="metric-label">Manual handoff</div></div>
+    </div>
+    <div style="margin-bottom:16px;font-size:12px;color:#64748b;text-transform:uppercase;letter-spacing:.06em">Performance Rates</div>
+    <div class="metrics-grid">
+      <div class="metric-card green"><div class="metric-val">Res%</div><div class="metric-label">Resolution rate</div></div>
+      <div class="metric-card red"><div class="metric-val">Esc%</div><div class="metric-label">Escalation rate</div></div>
+      <div class="metric-card purple"><div class="metric-val">Auto%</div><div class="metric-label">AI automation rate</div></div>
+      <div class="metric-card red"><div class="metric-val">Hand%</div><div class="metric-label">Human handoff rate</div></div>
+    </div>
+    <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
+      <span class="lc-chip" style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:5px;padding:4px 10px;font-size:11px;color:#94a3b8">📈 30-day trend line</span>
+      <span class="lc-chip" style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:5px;padding:4px 10px;font-size:11px;color:#94a3b8">🍩 Resolution tier donut</span>
+      <span class="lc-chip" style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:5px;padding:4px 10px;font-size:11px;color:#94a3b8">📊 Status bar chart</span>
+      <span class="lc-chip" style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:5px;padding:4px 10px;font-size:11px;color:#94a3b8">👥 Top users chart</span>
+      <span class="lc-chip new-f" style="background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.3);border-radius:5px;padding:4px 10px;font-size:11px;color:#93c5fd">🔁 AI Tier Funnel (NEW)</span>
+      <span class="lc-chip new-f" style="background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.3);border-radius:5px;padding:4px 10px;font-size:11px;color:#93c5fd">📋 Metrics Table (NEW)</span>
+    </div>
+  </div>
+
+</div>
+
+
+<div class="nav">
+  <button class="nav-btn active" id="n1">Title</button>
+  <button class="nav-btn" id="n2">Architecture</button>
+  <button class="nav-btn" id="n3">AI Workflow</button>
+  <button class="nav-btn" id="n4">New Features</button>
+  <button class="nav-btn" id="n5">Guardrails</button>
+  <button class="nav-btn" id="n6">Tech Stack</button>
+  <button class="nav-btn" id="n7">Metrics</button>
+  <span class="slide-counter" id="counter">1 / 7</span>
+</div>
+
+
+
+<div style="position:fixed;bottom:4px;right:16px;font-size:10px;color:#334155">Made with IBM Bob</div>
+</body>
+</html>

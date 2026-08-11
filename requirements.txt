@@ -1,0 +1,61 @@
+# ============================================================
+# AI Incident Management & Knowledge Assistant
+# Requirements - Python 3.12+
+# Uses flexible version ranges to avoid dependency conflicts.
+# ============================================================
+
+# --- Web Framework ---
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+python-multipart>=0.0.9
+
+# --- Database ---
+sqlalchemy>=2.0.0
+aiosqlite>=0.19.0
+
+# --- Data Validation ---
+pydantic>=2.7.0
+pydantic-settings>=2.3.0
+
+# --- Authentication ---
+passlib[bcrypt]>=1.7.4
+python-jose[cryptography]>=3.3.0
+bcrypt>=4.0.1
+
+# --- Environment ---
+python-dotenv>=1.0.0
+
+# --- LangChain & LangGraph ---
+langchain>=0.3.0
+langchain-core>=0.3.0
+langchain-community>=0.3.0
+langchain-openai>=0.2.0
+langgraph>=0.2.0
+langchain-text-splitters>=0.3.0
+
+# --- Vector Store ---
+chromadb>=0.5.0
+
+# --- Embeddings / Document Loading ---
+sentence-transformers>=3.0.0
+pypdf>=4.0.0
+
+# --- Frontend ---
+streamlit>=1.38.0
+
+# --- Visualization ---
+plotly>=5.20.0
+pandas>=2.1.0
+
+# --- Evaluation ---
+deepeval>=1.0.0
+
+# --- HTTP Client ---
+httpx>=0.27.0
+requests>=2.31.0
+
+# --- Utilities ---
+tenacity>=8.2.0
+rich>=13.0.0
+click>=8.1.0
+numpy>=1.26.0

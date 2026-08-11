@@ -1,0 +1,44 @@
+Network Troubleshooting Guide
+
+COMMON NETWORK ISSUES
+
+Issue: No Internet Connectivity
+L1 Steps:
+1. Check all physical cable connections.
+2. Restart modem and router (power cycle).
+3. Run Windows Network Diagnostics.
+4. Check if other devices on the same network have internet.
+5. Try connecting via ethernet instead of WiFi.
+
+L2 Steps:
+1. Release and renew IP address: ipconfig /release and ipconfig /renew.
+2. Reset Winsock: netsh winsock reset.
+3. Check DHCP server is reachable and assigning addresses.
+4. Verify DNS server settings (try 8.8.8.8).
+5. Check for IP address conflicts.
+
+Issue: Slow Network Performance
+L1 Steps:
+1. Run speed test to measure actual speeds.
+2. Check for background downloads or updates.
+3. Move closer to WiFi router.
+4. Restart network equipment.
+
+L2 Steps:
+1. Check for network congestion using ping tests.
+2. Update network adapter drivers.
+3. Check for packet loss with extended ping.
+4. Verify QoS settings on router.
+
+Issue: WiFi Not Connecting
+L1 Steps:
+1. Forget and reconnect to the WiFi network.
+2. Restart WiFi adapter.
+3. Check WiFi password is correct.
+4. Move closer to the access point.
+
+L2 Steps:
+1. Check if SSID is being broadcast.
+2. Verify security settings (WPA2 vs WPA3 compatibility).
+3. Check MAC address filtering on router.
+4. Update WiFi driver.

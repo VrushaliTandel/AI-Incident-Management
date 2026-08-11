@@ -1,0 +1,50 @@
+Server & Infrastructure Troubleshooting Guide
+
+COMMON SERVER ISSUES
+
+Issue: Server Not Responding
+L1 Steps:
+1. Ping the server to check basic connectivity.
+2. Check if server is powered on.
+3. Verify network connection to server.
+4. Check server console/IPMI.
+5. Check if other users can reach the server.
+
+L2 Steps:
+1. Check CPU, memory, and disk usage.
+2. Review system logs for errors.
+3. Check if critical services are running.
+4. Verify firewall rules allow the traffic.
+5. Check if server is in maintenance mode.
+
+L3 Steps:
+1. Analyze core dumps and crash reports.
+2. Check hardware health (RAID, PSU, temperature).
+3. Review kernel logs for hardware errors.
+4. Consider failover to backup server.
+5. Engage vendor support for hardware issues.
+
+Issue: High CPU Usage
+L1 Steps:
+1. Identify high CPU processes using Task Manager / top.
+2. Restart the problematic service.
+3. Check for runaway processes.
+
+L2 Steps:
+1. Profile application for CPU bottlenecks.
+2. Check for malware or crypto-mining.
+3. Review scheduled tasks running at peak time.
+4. Scale server resources.
+
+Issue: Disk Full
+L1 Steps:
+1. Check disk usage with df -h (Linux) or Disk Management (Windows).
+2. Clear temporary files.
+3. Empty recycle bin.
+4. Check for large log files.
+
+L2 Steps:
+1. Identify largest directories and files.
+2. Archive or delete old backups.
+3. Configure log rotation.
+4. Add additional disk capacity.

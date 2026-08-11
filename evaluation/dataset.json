@@ -1,0 +1,101 @@
+[
+  {
+    "id": "vpn_001",
+    "input": "My VPN is not connecting. I get a timeout error.",
+    "expected_output": "To resolve VPN connection issues: 1. Check internet connectivity. 2. Restart the VPN client. 3. Verify your credentials. 4. Check if VPN service is experiencing an outage. 5. Try connecting to a different VPN server.",
+    "retrieval_context": [
+      "VPN Troubleshooting Guide - L1 Resolution Steps: 1. Check your internet connection first - try opening a website. 2. Restart the VPN client application completely. 3. Verify your VPN credentials (username and password). 4. Check if the VPN service is experiencing an outage. 5. Try connecting to a different VPN server/region.",
+      "Connection Timeout Troubleshooting: Check if UDP 500 and 4500 are open. Try TCP 443 as fallback. Check MTU settings (recommended: 1400)"
+    ]
+  },
+  {
+    "id": "vpn_002",
+    "input": "VPN authentication keeps failing with error code 691",
+    "expected_output": "Error 691 indicates authentication failure. Steps: 1. Verify username and password are correct. 2. Check if account is locked in Active Directory. 3. Confirm MFA token is synchronized. 4. Verify group policy allows VPN access.",
+    "retrieval_context": [
+      "Authentication Error Troubleshooting: Verify Active Directory account is not locked. Check if MFA token is synchronized. Confirm group policy allows VPN access",
+      "VPN L2 Resolution Steps: Check Windows Firewall or antivirus blocking VPN ports. Reinstall the VPN client software. Verify the VPN server certificate is valid."
+    ]
+  },
+  {
+    "id": "network_001",
+    "input": "I cannot access the internet. All websites are not loading.",
+    "expected_output": "For internet connectivity issues: 1. Check physical cable connections. 2. Restart your modem and router. 3. Run Windows Network Diagnostics. 4. Check if other devices have internet. 5. Try ethernet instead of WiFi.",
+    "retrieval_context": [
+      "Network Troubleshooting Guide - No Internet Connectivity L1 Steps: Check all physical cable connections. Restart modem and router (power cycle). Run Windows Network Diagnostics. Check if other devices on the same network have internet.",
+      "Network L2 Steps: Release and renew IP address: ipconfig /release and ipconfig /renew. Reset Winsock: netsh winsock reset. Check DHCP server is reachable."
+    ]
+  },
+  {
+    "id": "network_002",
+    "input": "My WiFi keeps disconnecting every few minutes",
+    "expected_output": "For intermittent WiFi disconnection: 1. Forget and reconnect to WiFi network. 2. Restart WiFi adapter. 3. Move closer to the access point. 4. Check for interference from other devices. 5. Update WiFi driver.",
+    "retrieval_context": [
+      "WiFi Not Connecting L1 Steps: Forget and reconnect to the WiFi network. Restart WiFi adapter. Check WiFi password is correct. Move closer to the access point.",
+      "WiFi L2 Steps: Check if SSID is being broadcast. Verify security settings (WPA2 vs WPA3 compatibility). Check MAC address filtering on router. Update WiFi driver."
+    ]
+  },
+  {
+    "id": "email_001",
+    "input": "I cannot send or receive emails in Outlook",
+    "expected_output": "For email issues in Outlook: 1. Check internet connectivity. 2. Verify email account credentials. 3. Check spam/junk folder. 4. Restart Outlook. 5. Check if email service is experiencing an outage.",
+    "retrieval_context": [
+      "Email Troubleshooting Guide - Cannot Send or Receive Emails L1 Steps: Check internet connectivity. Verify email account credentials. Check spam/junk folder for missing emails. Restart email client.",
+      "Email L2 Steps: Verify SMTP/IMAP/POP3 server settings. Check if port 25, 465, 587 (SMTP) or 993 (IMAP) are open. Clear email client cache. Reconfigure email account from scratch."
+    ]
+  },
+  {
+    "id": "email_002",
+    "input": "Outlook is not opening, it crashes immediately on startup",
+    "expected_output": "For Outlook crash on startup: 1. Start Outlook in safe mode (outlook.exe /safe). 2. Disable add-ins. 3. Repair Office installation. 4. Rebuild Outlook profile. 5. Run ScanPST.exe to repair .pst file.",
+    "retrieval_context": [
+      "Outlook Not Opening L1 Steps: Restart Outlook. Run Outlook in safe mode: outlook.exe /safe. Disable add-ins. Repair Office installation.",
+      "Outlook L2 Steps: Rebuild Outlook profile. Run ScanPST.exe to repair .pst file. Check Windows Event Viewer for errors. Reinstall Office."
+    ]
+  },
+  {
+    "id": "auth_001",
+    "input": "I cannot login to the company portal. My account says it is locked.",
+    "expected_output": "For locked account: 1. Wait for the lockout period to expire. 2. Contact IT to unlock your Active Directory account. 3. Verify you are using the correct credentials. 4. Check if account has expired. 5. Reset password if needed.",
+    "retrieval_context": [
+      "Authentication Troubleshooting - Cannot Login / Account Locked L1 Steps: Verify you are using the correct username and password. Check CAPS LOCK is not enabled. Try password reset if available. Check if account is locked after too many attempts.",
+      "Authentication L2 Steps: Check Active Directory for account lockout status. Verify account expiry date has not passed. Check if account is disabled by administrator. Review group policy for lockout threshold."
+    ]
+  },
+  {
+    "id": "auth_002",
+    "input": "My MFA code is not working, it says invalid token",
+    "expected_output": "For MFA invalid token: 1. Verify your device time is synchronized with NTP. 2. Generate a new OTP code and try immediately. 3. Check if backup codes are available. 4. Contact IT to reset your MFA device enrollment.",
+    "retrieval_context": [
+      "MFA Not Working L1 Steps: Verify device time is synchronized (NTP). Try generating a new OTP code. Check if backup codes are available. Contact IT to reset MFA device.",
+      "MFA L2 Steps: Re-enroll MFA device. Check RADIUS server connectivity. Verify MFA policy is correctly configured. Review authentication logs for error codes."
+    ]
+  },
+  {
+    "id": "server_001",
+    "input": "The application server is not responding. Users cannot access the web application.",
+    "expected_output": "For server not responding: 1. Ping the server to check basic connectivity. 2. Check if the server is powered on via console/IPMI. 3. Verify network connection to server. 4. Check CPU, memory, and disk usage. 5. Review system logs for errors. 6. Check if critical services are running.",
+    "retrieval_context": [
+      "Server Troubleshooting - Server Not Responding L1 Steps: Ping the server to check basic connectivity. Check if server is powered on. Verify network connection to server. Check server console/IPMI.",
+      "Server L2 Steps: Check CPU, memory, and disk usage. Review system logs for errors. Check if critical services are running. Verify firewall rules allow the traffic."
+    ]
+  },
+  {
+    "id": "camera_001",
+    "input": "My webcam is not working in video calls. The camera shows a black screen.",
+    "expected_output": "For webcam not working: 1. Check if camera privacy cover is open. 2. Test camera in the Windows Camera app. 3. Check if another application is using the camera exclusively. 4. Update camera drivers in Device Manager. 5. Check Windows Camera privacy settings.",
+    "retrieval_context": [
+      "Camera Troubleshooting - Camera Not Working L1 Steps: Check if camera is physically connected. Restart the application using the camera. Check camera privacy cover is open. Test camera in a different application (e.g., Camera app).",
+      "Camera L2 Steps: Update camera drivers in Device Manager. Check if another application is using the camera (exclusive access). Roll back driver to previous version. Check Windows Camera privacy settings."
+    ]
+  },
+  {
+    "id": "router_001",
+    "input": "Office router is not working. No one in the building has internet.",
+    "expected_output": "For router not working: 1. Check power LED is on. 2. Power cycle the router by unplugging for 30 seconds. 3. Check all cable connections. 4. Check ISP connection light. 5. Connect directly to modem to isolate router issue. 6. Update router firmware.",
+    "retrieval_context": [
+      "Router Troubleshooting - Router Not Working L1 Steps: Check power LED is on. Power cycle the router (unplug 30 seconds). Check all cable connections. Try factory reset as last resort.",
+      "Router L2 Steps: Check ISP connection light on router. Connect directly to modem to isolate router issue. Update router firmware. Check DHCP pool is not exhausted."
+    ]
+  }
+]

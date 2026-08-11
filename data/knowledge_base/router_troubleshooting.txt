@@ -1,0 +1,38 @@
+Router & Switch Troubleshooting Guide
+
+COMMON ROUTER ISSUES
+
+Issue: Router Not Working
+L1 Steps:
+1. Check power LED is on.
+2. Power cycle the router (unplug 30 seconds).
+3. Check all cable connections.
+4. Try factory reset as last resort.
+5. Check router admin page for errors.
+
+L2 Steps:
+1. Check ISP connection light on router.
+2. Connect directly to modem to isolate router issue.
+3. Update router firmware.
+4. Check DHCP pool is not exhausted.
+5. Review router logs for WAN errors.
+
+L3 Steps:
+1. Analyze routing table for incorrect entries.
+2. Check BGP/OSPF routing protocol issues.
+3. Review spanning tree configuration.
+4. Check for routing loops.
+5. Engage ISP for upstream issues.
+
+Issue: Cannot Access Router Admin Page
+L1 Steps:
+1. Verify you are connected to the router's network.
+2. Try 192.168.1.1 or 192.168.0.1.
+3. Check default gateway: ipconfig /all.
+4. Clear browser cache.
+
+L2 Steps:
+1. Try from different device.
+2. Disable browser extensions.
+3. Try different browser.
+4. Try HTTPS if HTTP fails.

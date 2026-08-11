@@ -1,0 +1,224 @@
+ITSM Incident Management Knowledge Base
+Built from historical ITSM dataset patterns (ITSM_data.csv)
+
+==========================================================
+ITSM DATASET PATTERNS & RESOLUTION KNOWLEDGE
+==========================================================
+
+CI CATEGORIES AND THEIR COMMON ISSUES:
+- application (Web Based Application): Login failures, page not loading, session timeouts, slow performance
+- application (Desktop Application): Application crash, won't launch, compatibility errors, update failures
+- application (Server Based Application): Service unavailable, connection timeout, database errors, high load
+- subapplication (Web Based Application): Feature not working, API errors, form submission failures
+
+PRIORITY MATRIX (from ITSM dataset):
+Priority 1 (Critical): System down, affects all users, no workaround
+Priority 2 (High): Major feature broken, affects many users, workaround exists
+Priority 3 (Medium): Partial degradation, affects some users
+Priority 4 (Low): Minor issue, cosmetic, single user affected
+Priority NA/NS: Request for information, not a true incident
+
+IMPACT × URGENCY → PRIORITY:
+Impact 1, Urgency 1 → Priority 1 (Critical)
+Impact 2, Urgency 2 → Priority 2 (High)  
+Impact 3, Urgency 3 → Priority 3 (Medium)
+Impact 4, Urgency 4 → Priority 4 (Low)
+
+ITSM CLOSURE CODES AND RESOLUTION APPROACH:
+
+1. "No error - works as designed"
+   Meaning: User expected behavior differs from actual correct behavior
+   Resolution: User education, show correct workflow, update documentation
+   L1 Actions: Walk user through correct steps, share KB article, confirm understanding
+   Example: User thinks save button is broken — actually auto-save is disabled by design
+
+2. "Operator error"
+   Meaning: User made a mistake (wrong credentials, wrong steps, wrong data)
+   Resolution: Guide user through correct procedure
+   L1 Actions: Verify user is following correct steps, reset if needed
+   Example: User cannot login — CAPS LOCK was on, or wrong account used
+
+3. "Software"
+   Meaning: Application bug, misconfiguration, or software compatibility issue
+   Resolution: Patch, reconfigure, reinstall, or escalate to dev team
+   L2 Actions: Check config files, event logs, apply patches, test fixes
+   Example: Application crashes on specific action — corrupted config file
+
+4. "Data"
+   Meaning: Data integrity issue, corrupt data, missing data, wrong data
+   Resolution: Data correction, restore from backup, re-import
+   L2 Actions: Identify affected records, check DB, restore or correct data
+   Example: Report shows wrong figures — data migration introduced NULL values
+
+5. "Other"
+   Meaning: Resolved but does not fit other categories — often infrastructure or 3rd party
+   Resolution: Varies — fix environment, coordinate with vendor
+   L2/L3 Actions: Check infrastructure, engage vendor, apply workaround
+   Example: Intermittent errors from external API timeout
+
+6. "Unknown"
+   Meaning: Root cause could not be fully determined despite best efforts
+   Resolution: Apply best available fix, monitor, escalate if recurs
+   L3/Human Actions: Deep diagnostics, vendor engagement, escalate
+   Example: Random crashes with no reproducible trigger — hardware fault suspected
+
+==========================================================
+WEB BASED APPLICATION TROUBLESHOOTING (Most Common Category)
+==========================================================
+
+L1 RESOLUTION STEPS for Web Applications:
+1. Clear browser cache and cookies (Ctrl+Shift+Delete)
+2. Try incognito/private browsing mode
+3. Try a different browser (Chrome, Firefox, Edge)
+4. Check internet connectivity - can you access other websites?
+5. Log out completely and log back in (session refresh)
+6. Disable browser extensions/add-ons temporarily
+7. Check if the issue occurs for other users (service-wide vs. user-specific)
+8. Refresh the page (Ctrl+F5 for hard refresh)
+9. Verify URL is correct - no extra characters, correct domain
+10. Check if the web service status page shows any outage
+
+L2 RESOLUTION STEPS for Web Applications:
+1. Check application error logs (server-side logs, browser console F12)
+2. Verify user permissions and roles in the application
+3. Check database connectivity from the application server
+4. Review recent deployments or configuration changes
+5. Check server resources (CPU, memory, disk on app server)
+6. Verify session/cookie settings and timeouts
+7. Check load balancer configuration and health checks
+8. Review API gateway logs for error responses
+9. Test with different user accounts to isolate user-specific vs. global issue
+10. Check SSL certificate validity and HTTPS configuration
+
+L3 RESOLUTION STEPS for Web Applications:
+1. Full application profiling and performance analysis
+2. Database query optimization and index review
+3. Code-level debugging with development team
+4. Infrastructure scaling or architecture review
+5. Third-party service dependency analysis
+6. Security audit for authentication/authorization issues
+
+==========================================================
+DESKTOP APPLICATION TROUBLESHOOTING
+==========================================================
+
+L1 RESOLUTION STEPS:
+1. Close and reopen the application completely
+2. Restart the computer
+3. Run as Administrator (right-click → Run as administrator)
+4. Check if application is up to date
+5. Uninstall and reinstall the application
+6. Clear application cache/temp files (%AppData% folder)
+7. Disable antivirus temporarily and test
+
+L2 RESOLUTION STEPS:
+1. Check Windows Event Viewer for application errors
+2. Review application-specific log files
+3. Check .NET Framework or runtime dependencies
+4. Verify user profile is not corrupted (try with new user profile)
+5. Check registry entries for the application
+6. Verify Visual C++ redistributables are installed
+7. Test on different machine to isolate environment issue
+
+==========================================================
+SERVER BASED APPLICATION TROUBLESHOOTING
+==========================================================
+
+L1 RESOLUTION STEPS:
+1. Check if the service is running (Task Manager / Services)
+2. Restart the application service
+3. Check server connectivity (ping, traceroute)
+4. Verify user access permissions
+5. Check if other users are affected
+
+L2 RESOLUTION STEPS:
+1. Review server event logs and application logs
+2. Check server resource utilization (CPU, RAM, Disk, Network)
+3. Verify database connections and pool settings
+4. Check firewall rules and network ACLs
+5. Review service account permissions
+6. Check if scheduled maintenance or deployment occurred
+
+L3 RESOLUTION STEPS:
+1. Cluster/load balancer health analysis
+2. Database performance tuning
+3. Network packet capture and analysis
+4. Hardware health check (RAID, PSU, NIC)
+5. Vendor support engagement
+
+==========================================================
+AUTHENTICATION & LOGIN ISSUES (High Volume ITSM Category)
+==========================================================
+
+Closure Code: "Operator error" (most common for login issues)
+L1 RESOLUTION STEPS:
+1. Verify username/email is correct — check for typos
+2. Verify CAPS LOCK is off
+3. Use "Forgot Password" to reset
+4. Clear browser cookies and cache
+5. Try different browser/incognito mode
+6. Check if account has been locked (too many failed attempts)
+7. Verify account is not expired
+
+Closure Code: "Software" (for SSO/MFA failures)
+L2 RESOLUTION STEPS:
+1. Check Active Directory account status
+2. Verify MFA device time synchronization (NTP)
+3. Re-enroll MFA device
+4. Review SAML/OAuth configuration
+5. Check LDAP/AD group memberships
+6. Review authentication logs for error codes
+
+==========================================================
+REASSIGNMENT PATTERNS FROM ITSM DATASET
+==========================================================
+
+High reassignment count (>10) indicates:
+- Complex multi-system issues (route to L3)
+- Unclear ownership (needs team assignment review)
+- Recurring issues (needs root cause analysis)
+
+Low reassignment (0-2): Standard L1/L2 resolution expected
+Medium reassignment (3-9): L2 analysis required
+
+Handle time patterns:
+- <1 hour: Quick fix, likely operator error or known issue
+- 1-8 hours: Standard L2 investigation
+- >8 hours: Complex issue, L3 or Human Handoff warranted
+- >100 hours: Chronic issue, likely "Unknown" closure code
+
+==========================================================
+KB ARTICLE PATTERNS FROM ITSM DATASET
+==========================================================
+
+KM0000553 - Web Based Application connection issues
+KM0000611 - Web Based Application authentication and access
+KM0000401 - Web Based Application performance issues
+KM0000339 - Desktop Application compatibility
+KM0000670 - Server Based Application data issues
+KM0000928 - Web Based Application functionality errors
+KM0001430 - Desktop Application crash and startup failures
+
+==========================================================
+RESOLUTION WORKFLOW BY ITSM PRIORITY
+==========================================================
+
+Priority 1 (Critical) — IMMEDIATE RESPONSE:
+- Attempt L1 fix (restart, basic check) — max 15 minutes
+- If not resolved → escalate to L2 immediately
+- L2 has 1 hour to resolve or escalate to L3/Human
+- Notify stakeholders of progress every 30 minutes
+
+Priority 2 (High) — FAST RESPONSE:
+- L1 attempt — max 30 minutes
+- L2 engagement within 2 hours if L1 fails
+- Resolution target: 4 hours
+
+Priority 3 (Medium) — STANDARD RESPONSE:
+- L1 attempt — max 2 hours
+- L2 within same business day
+- Resolution target: 1-2 business days
+
+Priority 4 (Low) — SCHEDULED RESPONSE:
+- L1 attempt self-service or scheduled callback
+- Resolution within 3-5 business days

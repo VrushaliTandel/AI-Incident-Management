@@ -1,0 +1,38 @@
+Camera & Video Conferencing Troubleshooting Guide
+
+COMMON CAMERA ISSUES
+
+Issue: Camera Not Working
+L1 Steps:
+1. Check if camera is physically connected.
+2. Restart the application using the camera.
+3. Check camera privacy cover is open.
+4. Test camera in a different application (e.g., Camera app).
+5. Check if camera is selected as default device.
+
+L2 Steps:
+1. Update camera drivers in Device Manager.
+2. Check if another application is using the camera (exclusive access).
+3. Roll back driver to previous version.
+4. Uninstall and reinstall camera drivers.
+5. Check Windows Camera privacy settings.
+
+L3 Steps:
+1. Check Device Manager for error codes.
+2. Test camera on different USB port.
+3. Replace USB cable for external cameras.
+4. Test on different computer.
+5. RMA defective hardware.
+
+Issue: Poor Video Quality
+L1 Steps:
+1. Check internet bandwidth (need minimum 2Mbps upload).
+2. Close other bandwidth-intensive applications.
+3. Move closer to WiFi router.
+4. Lower video quality settings in the app.
+
+L2 Steps:
+1. Update camera firmware/drivers.
+2. Adjust camera resolution settings.
+3. Check lighting conditions.
+4. Reduce background processes using CPU.

@@ -1,0 +1,40 @@
+VPN Troubleshooting Guide
+
+COMMON VPN ISSUES AND SOLUTIONS
+
+Issue: VPN Not Connecting
+Root Cause: Network connectivity, credential errors, or service outage.
+
+L1 Resolution Steps:
+1. Check your internet connection first - try opening a website.
+2. Restart the VPN client application completely.
+3. Verify your VPN credentials (username and password).
+4. Check if the VPN service is experiencing an outage.
+5. Try connecting to a different VPN server/region.
+6. Disable and re-enable your network adapter.
+
+L2 Resolution Steps:
+1. Check Windows Firewall or antivirus blocking VPN ports (UDP 500, 4500, TCP 443).
+2. Flush DNS cache: run 'ipconfig /flushdns' on Windows.
+3. Reset TCP/IP stack: run 'netsh int ip reset'.
+4. Reinstall the VPN client software.
+5. Check if split tunneling is misconfigured.
+6. Verify the VPN server certificate is valid and not expired.
+
+L3 Resolution Steps:
+1. Capture VPN logs and analyze authentication failures.
+2. Check RADIUS/LDAP authentication server connectivity.
+3. Verify PKI certificates for client-based authentication.
+4. Review network routing tables for conflicts.
+5. Check if ISP is blocking VPN protocols.
+6. Consider switching VPN protocol (OpenVPN, IKEv2, WireGuard).
+
+Authentication Error Troubleshooting:
+- Verify Active Directory account is not locked
+- Check if MFA token is synchronized
+- Confirm group policy allows VPN access
+
+Connection Timeout Troubleshooting:
+- Check if UDP 500 and 4500 are open
+- Try TCP 443 as fallback
+- Check MTU settings (recommended: 1400)

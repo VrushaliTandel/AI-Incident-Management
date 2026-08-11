@@ -1,0 +1,43 @@
+Authentication & Login Troubleshooting Guide
+
+COMMON AUTHENTICATION ISSUES
+
+Issue: Cannot Login / Account Locked
+L1 Steps:
+1. Verify you are using the correct username and password.
+2. Check CAPS LOCK is not enabled.
+3. Try password reset if available.
+4. Check if account is locked after too many attempts.
+5. Clear browser cache and cookies.
+
+L2 Steps:
+1. Check Active Directory for account lockout status.
+2. Verify account expiry date has not passed.
+3. Check if account is disabled by administrator.
+4. Review group policy for lockout threshold.
+5. Check for Kerberos ticket issues.
+
+Issue: MFA Not Working
+L1 Steps:
+1. Verify device time is synchronized (NTP).
+2. Try generating a new OTP code.
+3. Check if backup codes are available.
+4. Contact IT to reset MFA device.
+
+L2 Steps:
+1. Re-enroll MFA device.
+2. Check RADIUS server connectivity.
+3. Verify MFA policy is correctly configured.
+4. Review authentication logs for error codes.
+
+Issue: SSO Not Working
+L1 Steps:
+1. Clear browser cookies and cache.
+2. Try different browser.
+3. Check if SSO provider is accessible.
+
+L2 Steps:
+1. Verify SAML/OAuth configuration.
+2. Check identity provider metadata.
+3. Review SSO error logs.
+4. Verify service provider ACS URL.
