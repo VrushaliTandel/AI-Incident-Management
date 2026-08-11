@@ -694,14 +694,5 @@ taskkill /PID <PID> /F
 | Rate limiting | Per-request timeout enforced on all API calls |
 | Secret key | Random 32-byte hex string (never use defaults in production) |
 
-### Production Checklist
-- [ ] Change `SECRET_KEY` to a secure random value
-- [ ] Set `ADMIN_PASSWORD` environment variable (don't rely on auto-generated)
-- [ ] Use PostgreSQL instead of SQLite for production
-- [ ] Enable HTTPS with a valid TLS certificate
-- [ ] Restrict CORS origins to your actual domain
-- [ ] Enable log retention and monitoring
 
 ---
-
-*Built with ❤️ using FastAPI, LangGraph, ChromaDB, and Streamlit.*
